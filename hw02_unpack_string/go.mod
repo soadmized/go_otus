@@ -1,4 +1,4 @@
-module github.com/soadmized/hw02_unpack_string
+module github.com/soadmized/go_otus/hw02_unpack_string
 
 go 1.20
 
