@@ -13,13 +13,13 @@ type lruCache struct {
 
 	capacity int
 	queue    List
-	items    map[Key]*ListItem
+	items    map[Key]*Node
 }
 
 func NewCache(capacity int) Cache {
 	return &lruCache{
 		capacity: capacity,
 		queue:    NewList(),
-		items:    make(map[Key]*ListItem, capacity),
+		items:    make(map[Key]*Node, capacity),
 	}
 }
