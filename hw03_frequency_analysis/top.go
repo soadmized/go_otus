@@ -15,7 +15,8 @@ func Top10(text string) []string {
 		}
 	}
 
-	top := []string{}
+	var top []string
+
 	sorted := sortByWordCount(freq)
 	if len(sorted) == 0 {
 		return top
