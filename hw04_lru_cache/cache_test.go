@@ -49,9 +49,32 @@ func TestCache(t *testing.T) {
 		require.Nil(t, val)
 	})
 
-	t.Run("purge logic", func(t *testing.T) {
-		// Write me
+	t.Run("capacity overflow", func(t *testing.T) {
+		cache := NewCache(3)
+		cache.Set("first", 1)
+		cache.Set("second", 2)
+		cache.Set("third", 3)
+		cache.Set("fourth", 4)
+
+		_, exist := cache.Get("first")
+		require.Equal(t, exist, false)
 	})
+
+	t.Run("remove oldest cache node", func(t *testing.T) {
+		cache := NewCache(3)
+		cache.Set("first", 1)
+		cache.Set("second", 2)
+		cache.Set("third", 3)
+
+		cache.Get("second")
+		cache.Set("third", "III")
+
+		cache.Set("fourth", 4)
+
+		_, exist := cache.Get("first")
+		require.Equal(t, exist, false)
+	})
+
 }
 
 func TestCacheMultithreading(t *testing.T) {

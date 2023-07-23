@@ -32,7 +32,7 @@ func (l lruCache) Set(key Key, value any) bool {
 		return true
 	}
 
-	if l.queue.Len() > l.capacity {
+	if l.queue.Len() >= l.capacity {
 		last := l.queue.Back()
 		l.queue.Remove(last)
 
