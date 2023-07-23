@@ -57,11 +57,8 @@ func (l lruCache) Get(key Key) (any, bool) {
 }
 
 func (l lruCache) Clear() {
-	newQueue := NewList()
-	newItems := make(map[Key]*Node)
-
-	l.queue = newQueue
-	l.items = newItems
+	l.queue = NewList()           //nolint:staticcheck
+	l.items = make(map[Key]*Node) //nolint:staticcheck
 }
 
 func NewCache(capacity int) Cache {

@@ -74,7 +74,6 @@ func TestCache(t *testing.T) {
 		_, exist := cache.Get("first")
 		require.Equal(t, exist, false)
 	})
-
 }
 
 func TestCacheMultithreading(t *testing.T) {
