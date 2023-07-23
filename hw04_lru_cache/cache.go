@@ -14,11 +14,19 @@ type lruCache struct {
 	items    map[Key]*Node
 }
 
+type cacheNode struct {
+	key   Key
+	value any
+}
+
 func (l lruCache) Set(key Key, value any) bool {
 	_, exist := l.Get(key)
 	if exist {
 		node := l.items[key]
-		node.Value = value
+		node.Value = cacheNode{
+			key:   key,
+			value: value,
+		}
 		l.queue.MoveToFront(node)
 
 		return true
@@ -27,23 +35,33 @@ func (l lruCache) Set(key Key, value any) bool {
 	if l.queue.Len() > l.capacity {
 		last := l.queue.Back()
 		l.queue.Remove(last)
-		// TODO: delete(l.items, key???)
+
+		delete(l.items, last.Value.(cacheNode).key)
 	}
 
-	node := l.queue.PushFront(value)
+	node := l.queue.PushFront(cacheNode{key: key, value: value})
 	l.items[key] = node
 
 	return false
 }
 
 func (l lruCache) Get(key Key) (any, bool) {
-	//TODO implement me
-	panic("implement me")
+	node, exist := l.items[key]
+	if exist {
+		l.queue.MoveToFront(node)
+
+		return (node.Value).(cacheNode).value, true
+	}
+
+	return nil, false
 }
 
 func (l lruCache) Clear() {
-	//TODO implement me
-	panic("implement me")
+	newQueue := NewList()
+	newItems := make(map[Key]*Node)
+
+	l.queue = newQueue
+	l.items = newItems
 }
 
 func NewCache(capacity int) Cache {
