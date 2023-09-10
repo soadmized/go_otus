@@ -33,10 +33,6 @@ func Test_setEnvs(t *testing.T) {
 }
 
 func TestRunCmd(t *testing.T) {
-	type args struct {
-		cmd []string
-		env Environment
-	}
 	tests := []struct {
 		name string
 		cmd  []string

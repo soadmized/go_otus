@@ -25,7 +25,7 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 
 	err = command.Run()
 	if err != nil {
-		exit := err.(*exec.ExitError)
+		exit := err.(*exec.ExitError) //nolint:errorlint
 
 		return exit.ExitCode()
 	}
@@ -35,7 +35,7 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 
 func setEnvs(envs Environment) error {
 	for k, v := range envs {
-		if v.NeedRemove == true {
+		if v.NeedRemove {
 			err := os.Unsetenv(k)
 			if err != nil {
 				return err

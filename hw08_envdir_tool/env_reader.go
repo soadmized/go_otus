@@ -53,7 +53,7 @@ func envValue(path string) EnvValue {
 
 	value := scanner.Text()
 	value = strings.TrimRight(value, " ")
-	trimmed := bytes.Replace([]byte(value), []byte{uint8(0)}, []byte("\n"), -1)
+	trimmed := bytes.ReplaceAll([]byte(value), []byte{uint8(0)}, []byte("\n"))
 	env.Value = string(trimmed)
 
 	return env
