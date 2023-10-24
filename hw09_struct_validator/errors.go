@@ -3,7 +3,7 @@ package hw09structvalidator
 import (
 	"strings"
 
-	"github.com/pkg/errors" //nolint:depguard
+	"github.com/pkg/errors"
 )
 
 type ValidationError struct {
