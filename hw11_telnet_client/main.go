@@ -27,7 +27,7 @@ func main() {
 
 	args := flag.Args()
 	if len(args) != 2 {
-		log.Fatal("usage: go-telnet --timeout host port")
+		log.Printf("usage: go-telnet --timeout host port")
 	}
 
 	addr := fmt.Sprintf("%s:%s", args[0], args[1])
@@ -35,7 +35,7 @@ func main() {
 
 	err := cl.Connect()
 	if err != nil {
-		log.Fatalf("connect error: %v", err)
+		log.Printf("connect error: %v", err)
 		return
 	}
 
@@ -49,7 +49,7 @@ func main() {
 	go func() {
 		err := cl.Receive()
 		if err != nil {
-			log.Fatalf("receive error: %v", err)
+			log.Printf("receive error: %v", err)
 		}
 
 		cancel()
@@ -58,7 +58,7 @@ func main() {
 	go func() {
 		err := cl.Send()
 		if err != nil {
-			log.Fatalf("send error: %v", err)
+			log.Printf("send error: %v", err)
 		}
 
 		cancel()
