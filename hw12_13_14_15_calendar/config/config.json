@@ -1,0 +1,5 @@
+{
+  "logLevel": "INFO",
+  "host": "localhost",
+  "port": "8080"
+}
