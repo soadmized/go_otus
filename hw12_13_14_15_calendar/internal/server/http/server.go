@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/soadmized/go_otus/hw12_13_14_15_calendar/internal/app"
+	"github.com/soadmized/go_otus/hw12_13_14_15_calendar/internal/storage"
 )
 
 type Server struct {
@@ -19,7 +22,14 @@ type Logger interface {
 	Info(msg string)
 }
 
-type Application interface { // TODO
+type Application interface {
+	Create(ctx context.Context, event app.Event) error
+	Get(ctx context.Context, id int) (storage.Event, error)
+	Update(ctx context.Context, event app.Event) error
+	Delete(ctx context.Context, id int) error
+	ListDayEvents(ctx context.Context, startDate time.Time) ([]storage.Event, error)
+	ListWeekEvents(ctx context.Context, startDate time.Time) ([]storage.Event, error)
+	ListMonthEvents(ctx context.Context, startDate time.Time) ([]storage.Event, error)
 }
 
 func NewServer(logger Logger, app Application, address string) *Server {
@@ -35,8 +45,10 @@ func (s *Server) Start(ctx context.Context) error {
 	case <-ctx.Done():
 		return nil
 	default:
-		handler := http.NewServeMux()
-		handler.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		mux := http.NewServeMux()
+		handler := Handler{app: s.app, logger: s.logger}
+
+		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 			_, err := w.Write([]byte("hello-world"))
 			if err != nil {
 				s.logger.Error(err.Error())
@@ -44,10 +56,17 @@ func (s *Server) Start(ctx context.Context) error {
 				w.WriteHeader(200)
 			}
 		})
+		mux.HandleFunc("/create", handler.create)
+		mux.HandleFunc("/get", handler.get)
+		mux.HandleFunc("/update", handler.update)
+		mux.HandleFunc("/delete", handler.delete)
+		mux.HandleFunc("/day_list", handler.listDayEvents)
+		mux.HandleFunc("/week_list", handler.listWeekEvents)
+		mux.HandleFunc("/month_list", handler.listMonthEvents)
 
 		s.server = &http.Server{
 			Addr:         s.address,
-			Handler:      loggingMiddleware(handler, s.logger),
+			Handler:      loggingMiddleware(mux, s.logger),
 			ReadTimeout:  time.Second * 10,
 			WriteTimeout: time.Second * 10,
 		}
