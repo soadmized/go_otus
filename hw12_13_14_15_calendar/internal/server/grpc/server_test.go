@@ -17,16 +17,13 @@ import (
 )
 
 func TestCalendarServer(t *testing.T) { //nolint:funlen
-	ctx := context.Background()
-
-	db := getStorage()
-
-	server := grpcServerStub(ctx, db)
-
-	defer server.Stop(ctx)
-
 	t.Run("create", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 1
 
@@ -47,12 +44,14 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		event, err := db.Get(ctx, int(resp.GetId()))
 		require.NoError(t, err)
 		require.Equal(t, event.ID, int(resp.GetId()))
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("get", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 2
 
@@ -73,12 +72,14 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		})
 		require.NoError(t, err)
 		require.Equal(t, int64(2), resp.GetEvent().GetId())
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("update", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 3
 
@@ -113,12 +114,14 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		event, err := db.Get(ctx, int(resp.GetId()))
 		require.NoError(t, err)
 		require.Equal(t, "updated event", event.Title)
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("delete", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 4
 
@@ -144,12 +147,14 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 
 		_, err = db.Get(ctx, int(resp.GetId()))
 		require.Error(t, err)
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("list day events", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 5
 		start := time.Now()
@@ -176,12 +181,14 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		events := resp.GetEvents()
 		require.Len(t, events, 1)
 		require.Equal(t, int64(5), events[0].Id)
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("list week events", func(t *testing.T) {
 		ctx := context.Background()
+
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
 
 		id := 6
 
@@ -209,14 +216,17 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		events := resp.GetEvents()
 		require.Len(t, events, 1)
 		require.Equal(t, int64(6), events[0].Id)
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 	t.Run("list month events", func(t *testing.T) {
 		ctx := context.Background()
 
+		db := getStorage()
+		server := grpcServerStub(ctx, db)
+
+		defer server.Stop(ctx)
+
 		id := 7
+
 		start := time.Now().Add(time.Hour * 24 * 31)
 		notifTime := start.Add(time.Hour)
 
@@ -241,9 +251,6 @@ func TestCalendarServer(t *testing.T) { //nolint:funlen
 		events := resp.GetEvents()
 		require.Len(t, events, 1)
 		require.Equal(t, int64(7), events[0].Id)
-
-		// cleanup
-		db.Delete(ctx, id)
 	})
 }
 
