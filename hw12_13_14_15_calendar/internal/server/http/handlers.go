@@ -31,7 +31,7 @@ func (h *Handler) create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) get(w http.ResponseWriter, r *http.Request) { //nolint:dupl
 	event, err := decodeBody(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -106,7 +106,7 @@ func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) listDayEvents(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) listDayEvents(w http.ResponseWriter, r *http.Request) { //nolint:dupl
 	event, err := decodeBody(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -137,7 +137,7 @@ func (h *Handler) listDayEvents(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) listWeekEvents(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) listWeekEvents(w http.ResponseWriter, r *http.Request) { //nolint:dupl
 	event, err := decodeBody(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -168,7 +168,7 @@ func (h *Handler) listWeekEvents(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) listMonthEvents(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) listMonthEvents(w http.ResponseWriter, r *http.Request) { //nolint:dupl
 	event, err := decodeBody(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

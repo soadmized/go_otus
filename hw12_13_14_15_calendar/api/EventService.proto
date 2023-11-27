@@ -2,6 +2,69 @@ syntax = "proto3";
 
 package event;
 
+option go_package = "./;protogen";
+
+service Calendar {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+
+  rpc Get(GetRequest) returns (GetResponse) {}
+
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+
+  rpc ListDayEvents(ListRequest) returns (ListResponse) {}
+  rpc ListWeekEvents(ListRequest) returns (ListResponse) {}
+  rpc ListMonthEvents(ListRequest) returns (ListResponse) {}
+
+}
+
 message Event {
-    // TODO
+  int64 id = 1;
+  string title = 2;
+  string startDate = 3;
+  int64 duration = 4;
+  string description = 5;
+  int64 userId = 6;
+  string notificationTime = 7;
+}
+
+message CreateRequest {
+  Event event = 1;
+}
+
+message CreateResponse {
+  int64 id = 1;
+}
+
+message GetRequest {
+  int64 id = 1;
+}
+
+message GetResponse {
+  Event event = 1;
+}
+
+message UpdateRequest {
+  Event event = 1;
+}
+
+message UpdateResponse {
+  int64 id = 1;
+}
+
+message DeleteRequest {
+  int64 id = 1;
+}
+
+message DeleteResponse {
+  int64 id = 1;
+}
+
+message ListRequest {
+  string startDate = 1;
+}
+
+message ListResponse {
+  repeated Event events = 1;
 }

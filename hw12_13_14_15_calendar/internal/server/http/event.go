@@ -12,7 +12,7 @@ type Event struct {
 	StartDate        time.Time     `json:"startDate,omitempty"`
 	Duration         time.Duration `json:"duration,omitempty"`
 	Description      string        `json:"description,omitempty"`
-	UserID           int           `json:"userID,omitempty"`
+	UserID           int           `json:"userID,omitempty"` //nolint:tagliatelle
 	NotificationTime time.Time     `json:"notificationTime,omitempty"`
 }
 
