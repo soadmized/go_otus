@@ -1,5 +1,6 @@
 {
   "logLevel": "INFO",
   "host": "localhost",
-  "port": "8080"
+  "port": "8080",
+  "grpcPort": "7777"
 }
